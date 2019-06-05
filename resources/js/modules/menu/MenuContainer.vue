@@ -19,7 +19,7 @@
                 <card-component>
                     <template slot="title">Add Menu Item</template>
                     <template slot="body">
-                        <MenuAddForm :categories ="categories"></MenuAddForm> 
+                        <MenuAddForm :categories ="categories" :resto-id="restoId"></MenuAddForm> 
                     </template>
                 </card-component>
             </div>
@@ -38,7 +38,7 @@ export default {
         Multiselect, MenuGroup, MenuAddForm
     },
     
-    props:['items'],
+    props:['items', 'restoId'],
 
     created() {
         _.forEach(this.items, (item, key) => {
