@@ -1723,6 +1723,11 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue_multiselect__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue-multiselect */ "./node_modules/vue-multiselect/dist/vue-multiselect.min.js");
 /* harmony import */ var vue_multiselect__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue_multiselect__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _utiles_Validation_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./../../utiles/Validation.js */ "./resources/js/utiles/Validation.js");
+//
+//
+//
+//
 //
 //
 //
@@ -1758,6 +1763,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['categories', 'restoId'],
   components: {
@@ -1765,23 +1771,37 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
-      food: {
+      food: this.emptyFoodItem(),
+      validation: new _utiles_Validation_js__WEBPACK_IMPORTED_MODULE_1__["default"]()
+    };
+  },
+  methods: {
+    emptyFoodItem: function emptyFoodItem() {
+      return {
         item: '',
         category: '',
         price: 100,
         description: ''
-      }
-    };
-  },
-  methods: {
+      };
+    },
     handleSubmit: function handleSubmit() {
+      var _this = this;
+
       console.log(this.food);
       var postData = this.food;
       postData.restoId = this.restoId;
       window.axios.post('api/item/save', postData).then(function (response) {
         console.log(response.data);
+
+        _this.$emit('NewMenuItemAdded', response.data, postData.category);
+
+        _this.food = _this.emptyFoodItem();
       })["catch"](function (error) {
-        return console.log(error.response);
+        console.log(error.response);
+
+        if (error.response.status == 422) {
+          _this.validation.setMessages(error.response.data.errors);
+        }
       });
     }
   }
@@ -1852,16 +1872,24 @@ __webpack_require__.r(__webpack_exports__);
     });
 
     this.menu = this.categories[0];
+    this.localItems = this.items;
   },
   data: function data() {
     return {
+      localItems: '',
       menu: '',
       categories: []
     };
   },
   computed: {
     currentMenuItems: function currentMenuItems() {
-      return this.items[this.menu];
+      return this.localItems[this.menu];
+    }
+  },
+  methods: {
+    handleNewMenuItem: function handleNewMenuItem(item, category) {
+      console.log(item);
+      this.localItems[category].unshift(item);
     }
   }
 });
@@ -37874,6 +37902,11 @@ var render = function() {
                 _vm.$set(_vm.food, "item", $event.target.value)
               }
             }
+          }),
+          _vm._v(" "),
+          _c("div", {
+            staticClass: "validation-message",
+            domProps: { textContent: _vm._s(_vm.validation.getMessage("item")) }
           })
         ]),
         _vm._v(" "),
@@ -37893,6 +37926,13 @@ var render = function() {
                   _vm.$set(_vm.food, "category", $$v)
                 },
                 expression: "food.category"
+              }
+            }),
+            _vm._v(" "),
+            _c("div", {
+              staticClass: "validation-message",
+              domProps: {
+                textContent: _vm._s(_vm.validation.getMessage("category"))
               }
             })
           ],
@@ -37922,6 +37962,13 @@ var render = function() {
                 _vm.$set(_vm.food, "price", $event.target.value)
               }
             }
+          }),
+          _vm._v(" "),
+          _c("div", {
+            staticClass: "validation-message",
+            domProps: {
+              textContent: _vm._s(_vm.validation.getMessage("price"))
+            }
           })
         ]),
         _vm._v(" "),
@@ -37947,6 +37994,13 @@ var render = function() {
                 }
                 _vm.$set(_vm.food, "description", $event.target.value)
               }
+            }
+          }),
+          _vm._v(" "),
+          _c("div", {
+            staticClass: "validation-message",
+            domProps: {
+              textContent: _vm._s(_vm.validation.getMessage("description"))
             }
           })
         ]),
@@ -38048,7 +38102,8 @@ var render = function() {
                     attrs: {
                       categories: _vm.categories,
                       "resto-id": _vm.restoId
-                    }
+                    },
+                    on: { NewMenuItemAdded: _vm.handleNewMenuItem }
                   })
                 ],
                 1
@@ -50675,6 +50730,57 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_MenuGroups_vue_vue_type_template_id_707660cd___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_MenuGroups_vue_vue_type_template_id_707660cd___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/utiles/Validation.js":
+/*!*******************************************!*\
+  !*** ./resources/js/utiles/Validation.js ***!
+  \*******************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Validation; });
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var Validation =
+/*#__PURE__*/
+function () {
+  function Validation() {
+    _classCallCheck(this, Validation);
+
+    this.messages = {};
+  }
+
+  _createClass(Validation, [{
+    key: "getMessage",
+    value: function getMessage(field) {
+      if (this.messages[field]) {
+        return this.messages[field][0];
+      }
+    }
+  }, {
+    key: "setMessages",
+    value: function setMessages(messages) {
+      this.messages = messages;
+    }
+  }, {
+    key: "empty",
+    value: function empty() {
+      this.messages = {};
+    }
+  }]);
+
+  return Validation;
+}();
 
 
 

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Menu;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Rules\RestoCategoryValidate;
 
@@ -17,7 +19,16 @@ class MenuController extends Controller
             'category' => ['required', new RestoCategoryValidate(request('restoId'))],
         ]);
         
+        $categorie = Category::where('resto_id', $postData['restoId'])->where('name', $postData['category'])->first();
 
-        return $request->all();
+        $menu = Menu::create([
+            'name' => $postData['item'],
+            'resto_id' => $postData['restoId'],
+            'price' => $postData['price'],
+            'description' => $postData['description'],
+            'category_id' => $categorie->id,
+        ]);
+
+        return response()->json($menu, 201);
     }
 }

@@ -19,7 +19,7 @@
                 <card-component>
                     <template slot="title">Add Menu Item</template>
                     <template slot="body">
-                        <MenuAddForm :categories ="categories" :resto-id="restoId"></MenuAddForm> 
+                        <MenuAddForm :categories ="categories" :resto-id="restoId" v-on:NewMenuItemAdded="handleNewMenuItem"></MenuAddForm> 
                     </template>
                 </card-component>
             </div>
@@ -45,10 +45,12 @@ export default {
             this.categories.push(key);
         });
         this.menu = this.categories[0];
+        this.localItems = this.items;
     },
 
     data() {
         return {
+            localItems: '',
             menu: '',
             categories: []
         }
@@ -56,7 +58,14 @@ export default {
 
     computed: {
         currentMenuItems() {
-            return this.items[this.menu];
+            return this.localItems[this.menu];
+        }
+    },
+
+    methods: {
+        handleNewMenuItem(item, category) {
+            console.log(item);
+            this.localItems[category].unshift(item);
         }
     }
 
