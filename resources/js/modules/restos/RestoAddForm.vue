@@ -15,8 +15,8 @@
       <label for="name">Address</label>
       <input type="text"
         class="form-control"
-        name="address"
-        v-model="resto.address"
+        name="location"
+        v-model="resto.location"
         placeholder="Enter restaurant address">
     </div>
 
@@ -35,22 +35,22 @@
 
 <script>
 export default {
-  data() {
-    return {
-      resto: this.basicResto()
-    }
-  },
-  methods: {
-    basicResto() {
-      return { name: "", address: "", tables: 0 }
+    data() {
+        return {
+        resto: this.basicResto()
+        }
     },
-    handleAddButton() {
-      this.$emit('addRestoEvent', this.resto);
-    },
-    handleCancelButton() {
-      this.resto = this.basicResto();
-      this.$emit('modalCancel');
+    methods: {
+        basicResto() {
+        return { name: "", location: "", tables: 0 }
+        },
+        handleAddButton() {
+        this.$emit('addRestoEvent', this.resto);
+        },
+        handleCancelButton() {
+        this.resto = this.basicResto();
+        this.$emit('modalCancel');
+        }
     }
-  }
 }
 </script>
