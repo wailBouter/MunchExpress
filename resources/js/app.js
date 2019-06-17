@@ -22,6 +22,7 @@ window.Vue = require('vue');
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default));
 
 Vue.component('menu-container', require('./modules/menu/MenuContainer.vue').default);
+Vue.component('resto-group', require('./modules/restos/RestoGroup.vue').default);
 Vue.component('card-component', require('./components/Card.vue').default);
 
 
