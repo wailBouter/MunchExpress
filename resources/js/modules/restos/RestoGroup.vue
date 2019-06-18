@@ -4,7 +4,10 @@
       <div class="col-md-4 mb-4" v-for="resto in localResto" :key="resto.id">
         <card-component>
           <template slot="title">{{resto.name}}</template>
-          <template slot="body">{{resto.location}}</template>
+          <template slot="body">{{resto.location}}
+            <br>
+            <a v-bind:href="resto.slug">Menu</a>
+          </template>
         </card-component>
       </div>
       <div class="col-md-4" v-if="showAddForm">
@@ -35,7 +38,6 @@ export default {
     },
     props: ['restos'],
     created() {
-        console.log('this.restos.length', this.restos.length);
         this.localResto = this.restos;
     },
     computed: {
