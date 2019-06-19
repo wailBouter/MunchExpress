@@ -4,9 +4,14 @@
       <div class="col-md-4 mb-4" v-for="resto in localResto" :key="resto.id">
         <card-component>
           <template slot="title">{{resto.name}}</template>
-          <template slot="body">{{resto.location}}
-            <br>
-            <a v-bind:href="resto.slug">Menu</a>
+          <template slot="body">
+            <div class="content-container"> 
+              <i class="fas fa-map-marker-alt"></i> {{resto.location}}
+              <br>
+              <i class="fas fa-table"></i> {{resto.tables}}
+            </div>
+            <a class="card-link" v-bind:href="resto.slug">Menu</a>
+            <a class="card-link" v-bind:href="resto.ordersSlug">Orders</a>
           </template>
         </card-component>
       </div>
@@ -14,7 +19,9 @@
         <card-component>
           <template slot="title">Add new Restaurant</template>
           <template slot="body">
-              <span @click="handleAddNewResto">+</span>
+              <div class="newResto">
+                <span @click="handleAddNewResto"><i class="fas fa-plus-circle"></i></span>
+              </div>
           </template>
         </card-component>
         <modal name="add-new-resto" height="auto">
@@ -66,3 +73,16 @@ export default {
     }
 }
 </script>
+<style scoped>
+.fa-plus-circle {
+  font-size: -webkit-xxx-large;
+}
+.newResto {
+  text-align: center;
+}
+.content-container {
+  padding-block-end: inherit;
+}
+
+</style>
+

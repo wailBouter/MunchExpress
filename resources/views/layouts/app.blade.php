@@ -28,5 +28,6 @@
             @yield('content')
         </main>
     </div>
+    <script src="https://kit.fontawesome.com/ea02b30e30.js"></script>
 </body>
 </html>
