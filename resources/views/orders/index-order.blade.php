@@ -10,6 +10,7 @@
 
     <div class="row">
         <div class="col-md-12">
+            <a href="{{route('restos.orders.add', $resto->id)}}" class="mb-2 btn btn-primary float-right">Add Order</a>
             @if($orders->count() > 0)
             <table class="table table-hover table-bordered table-striped">
                 <thead>

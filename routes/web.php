@@ -16,4 +16,6 @@ Route::group(['middleware' => 'auth'], function(){
 
     Route::get('restos/orders/{id}', 'RestaurantOrderController@index')->name('restos.orders');
 
+    Route::get('restos/orders/{id}/add', 'RestaurantOrderController@add')->name('restos.orders.add');
+
 });
