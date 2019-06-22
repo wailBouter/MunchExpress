@@ -19,6 +19,7 @@ Vue.component('resto-group', require('./modules/restos/RestoGroup.vue').default)
 Vue.component('order-group', require('./modules/orders/OrderGroup.vue').default);
 Vue.component('card-component', require('./components/Card.vue').default);
 
+window.eventBus = new Vue({});
 
 document.addEventListener('turbolinks:load', () => {
     var element = document.getElementById("app")
