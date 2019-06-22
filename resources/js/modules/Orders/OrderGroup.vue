@@ -8,7 +8,7 @@
         </div>
         <div class="col-md-5">
             <h3>Menu</h3>
-            <order-menu-items :menus="menuItems"></order-menu-items>
+            <order-menu-items :menus="menuItems" :originalMenus="OriginalMenuItems"></order-menu-items>
         </div>
     </div>
 </template>
@@ -25,8 +25,6 @@ export default {
         this.loadRestoMenuItems();
         window.eventBus.$on('addMenuEvent', this.handleAddMenu);
         window.eventBus.$on('filteredList', this.handleFilteredList);
-        window.eventBus.$on('clearedList', this.handleClearedList);
-
     },
     data() {
         return{
@@ -59,9 +57,6 @@ export default {
         },
         handleFilteredList(filterdList) {
             this.menuItems = filterdList;
-        },
-        handleClearedList() {
-            this.menuItems = this.OriginalMenuItems
         }
     }
 }

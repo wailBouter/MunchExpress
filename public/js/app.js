@@ -1989,9 +1989,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['menus'],
+  props: ['menus', 'originalMenus'],
+  created: function created() {
+    this.localMenus = this.menus;
+  },
   data: function data() {
     return {
+      localMenus: [],
       searchSring: ''
     };
   },
@@ -1999,18 +2003,15 @@ __webpack_require__.r(__webpack_exports__);
     filteredList: function filteredList() {
       var _this = this;
 
-      return this.menus.filter(function (menu) {
+      this.localMenus = this.originalMenus;
+      return this.localMenus.filter(function (menu) {
         return menu.name.toLowerCase().includes(_this.searchSring.toLowerCase());
       });
     }
   },
   watch: {
     searchSring: function searchSring(value) {
-      if (value != '') {
-        window.eventBus.$emit('filteredList', this.filteredList);
-      } else {
-        window.eventBus.$emit('clearedList');
-      }
+      window.eventBus.$emit('filteredList', this.filteredList);
     }
   }
 });
@@ -2136,7 +2137,6 @@ __webpack_require__.r(__webpack_exports__);
     this.loadRestoMenuItems();
     window.eventBus.$on('addMenuEvent', this.handleAddMenu);
     window.eventBus.$on('filteredList', this.handleFilteredList);
-    window.eventBus.$on('clearedList', this.handleClearedList);
   },
   data: function data() {
     return {
@@ -2173,9 +2173,6 @@ __webpack_require__.r(__webpack_exports__);
     },
     handleFilteredList: function handleFilteredList(filterdList) {
       this.menuItems = filterdList;
-    },
-    handleClearedList: function handleClearedList() {
-      this.menuItems = this.OriginalMenuItems;
     }
   }
 });
@@ -2207,7 +2204,7 @@ __webpack_require__.r(__webpack_exports__);
     MenuItems: _MenuItems__WEBPACK_IMPORTED_MODULE_1__["default"],
     MenuSearch: _MenuSearch__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
-  props: ['menus']
+  props: ['menus', 'originalMenus']
 });
 
 /***/ }),
@@ -38958,7 +38955,9 @@ var render = function() {
       [
         _c("h3", [_vm._v("Menu")]),
         _vm._v(" "),
-        _c("order-menu-items", { attrs: { menus: _vm.menuItems } })
+        _c("order-menu-items", {
+          attrs: { menus: _vm.menuItems, originalMenus: _vm.OriginalMenuItems }
+        })
       ],
       1
     )
@@ -38990,7 +38989,9 @@ var render = function() {
     "div",
     { staticClass: "wrapper" },
     [
-      _c("menu-search", { attrs: { menus: _vm.menus } }),
+      _c("menu-search", {
+        attrs: { menus: _vm.menus, originalMenus: _vm.originalMenus }
+      }),
       _vm._v(" "),
       _c("menu-items", { attrs: { menus: _vm.menus } })
     ],

@@ -6,26 +6,27 @@
 
 <script>
 export default {
-    props: ['menus'],
+    props: ['menus', 'originalMenus'],
+    created() {
+        this.localMenus = this.menus;
+    },
     data() {
         return {
+            localMenus: [],
             searchSring: ''
         }
     },
     computed: {
         filteredList() {
-            return this.menus.filter(menu => {
+            this.localMenus = this.originalMenus;
+            return this.localMenus.filter(menu => {
                 return menu.name.toLowerCase().includes(this.searchSring.toLowerCase());
             });
         }
     },
     watch: {
         searchSring (value){
-            if(value != '') {
-                window.eventBus.$emit('filteredList', this.filteredList);
-            }else {
-                window.eventBus.$emit('clearedList');
-            }
+            window.eventBus.$emit('filteredList', this.filteredList);
         }
     }
 }

@@ -1,6 +1,6 @@
 <template>
     <div class="wrapper">
-        <menu-search :menus="menus"></menu-search>
+        <menu-search :menus="menus" :originalMenus="originalMenus"></menu-search>
         <menu-items :menus="menus"></menu-items>
     </div>
 </template> 
@@ -10,7 +10,7 @@ import MenuSearch from './MenuSearch'
 import MenuItems from './MenuItems'
 export default {
     components: {MenuItems, MenuSearch},
-    props: ['menus']
+    props: ['menus', 'originalMenus']
 }
 </script>
 
