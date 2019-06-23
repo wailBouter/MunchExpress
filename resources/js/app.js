@@ -17,6 +17,7 @@ Vue.use(VModal);
 Vue.component('menu-container', require('./modules/menu/MenuContainer.vue').default);
 Vue.component('resto-group', require('./modules/restos/RestoGroup.vue').default);
 Vue.component('order-group', require('./modules/orders/OrderGroup.vue').default);
+Vue.component('orders-manager', require('./modules/orders/OrdersManager.vue').default);
 Vue.component('card-component', require('./components/Card.vue').default);
 
 window.eventBus = new Vue({});

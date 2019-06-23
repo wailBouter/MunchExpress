@@ -10,7 +10,7 @@
                 <h3>Customer details</h3>
                 <order-form @customerDetailsEvent="handleCustomerDetails"></order-form>
                 <h3>Order details <span class="float-right" v-if="finalAmount > 0">{{finalAmount}}</span> <h6 v-else>You have no orders yet</h6></h3> 
-                <order-details :orderDetails="orders"></order-details>
+                <order-details :orderDetails="orders" @removeOrderEvent="handleOrderRemove"></order-details>
             </div>
             <div class="col-md-5">
                 <h3>Menu</h3>
@@ -68,6 +68,9 @@ export default {
         },
         handleCustomerDetails(customer) {
             this.customerDetails = customer;
+        },
+        handleOrderRemove(order){
+            this.orders = this.orders.filter(item => item.id != order.id);
         },
         handleOrderSave() {
             let ordersIds = [];

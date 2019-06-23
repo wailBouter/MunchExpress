@@ -12,33 +12,7 @@
         <div class="col-md-12">
             <a href="{{route('restos.orders.add', $resto->id)}}" class="mb-2 btn btn-primary float-right">Add Order</a>
             @if($orders->count() > 0)
-            <table class="table table-hover table-bordered table-striped">
-                <thead>
-                    <tr>
-                        <th>Order Id</th>
-                        <th>Amount</th>
-                        <th>Status</th>
-                        <th>Customer details</th>
-                    </tr>
-                </thead>
-
-                <tbody>
-                    @foreach($orders as $order)
-                        <tr>
-                            <td>{{$order->id}}</td>
-                            <td>{{$order->amount}}</td>
-                            <td>{{($order->isComplete) ? 'Completed' : 'Incomplete'}}</td>
-                            <td>
-                                Name: {{$order['order_details']['customer_name']}}
-                                <br>
-                                Phone: {{$order['order_details']['customer_phone']}}
-                                <br>
-                                Address: {{$order['order_details']['customer_address']}}
-                            </td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
+                <orders-manager :orders="{{json_encode($orders)}}"></orders-manager>
             {{$orders->render()}}
             @else
                 <p>You don't have any orders yet.</p>
