@@ -5,21 +5,21 @@
                 <label for="name">Name</label>
                 <input type="text"
                     class="form-control"
-                    v-bind="customer.name">
+                    v-model="customer.name">
             </div>
 
             <div class="form-group">
                 <label for="name">Phone Number</label>
                 <input type="text"
                     class="form-control"
-                    v-bind="customer.phone">
+                    v-model="customer.phone">
             </div>
 
             <div class="form-group">
                 <label for="name">Address</label>
                 <input type="text"
                     class="form-control"
-                    v-bind="customer.address">
+                    v-model="customer.address">
             </div>
 
         </form>
@@ -35,6 +35,18 @@ export default {
                 phone: '',
                 address: ''
             }
+        }
+    },
+    watch: {
+        customer: {
+            handler(value) {
+                let customer = {
+                    name: value.name,
+                    phone: value.phone,
+                    address: value.address
+                }
+                this.$emit('customerDetailsEvent', customer);
+            }, deep: true
         }
     }
 }

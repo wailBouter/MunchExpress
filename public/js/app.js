@@ -2064,6 +2064,19 @@ __webpack_require__.r(__webpack_exports__);
         address: ''
       }
     };
+  },
+  watch: {
+    customer: {
+      handler: function handler(value) {
+        var customer = {
+          name: value.name,
+          phone: value.phone,
+          address: value.address
+        };
+        this.$emit('customerDetailsEvent', customer);
+      },
+      deep: true
+    }
   }
 });
 
@@ -2122,6 +2135,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -2142,7 +2162,8 @@ __webpack_require__.r(__webpack_exports__);
     return {
       OriginalMenuItems: [],
       menuItems: [],
-      orders: []
+      orders: [],
+      customerDetails: null
     };
   },
   computed: {
@@ -2173,6 +2194,29 @@ __webpack_require__.r(__webpack_exports__);
     },
     handleFilteredList: function handleFilteredList(filterdList) {
       this.menuItems = filterdList;
+    },
+    handleCustomerDetails: function handleCustomerDetails(customer) {
+      this.customerDetails = customer;
+    },
+    handleOrderSave: function handleOrderSave() {
+      var ordersIds = [];
+      this.orders.forEach(function (order) {
+        ordersIds.push(order.id);
+      });
+      var orderInfos = {
+        resto_id: this.restoId,
+        order_data: {
+          customerDetails: this.customerDetails,
+          totalPrice: this.finalAmount,
+          orders: ordersIds
+        }
+      };
+      console.log('saved', orderInfos);
+      axios__WEBPACK_IMPORTED_MODULE_3___default.a.post('/api/order/save', orderInfos).then(function (response) {
+        return console.log('response', response.data);
+      })["catch"](function (error) {
+        return console.log('error', error.data);
+      });
     }
   }
 });
@@ -38825,43 +38869,79 @@ var render = function() {
       _c("div", { staticClass: "form-group" }, [
         _c("label", { attrs: { for: "name" } }, [_vm._v("Name")]),
         _vm._v(" "),
-        _c(
-          "input",
-          _vm._b(
-            { staticClass: "form-control", attrs: { type: "text" } },
-            "input",
-            _vm.customer.name,
-            false
-          )
-        )
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.customer.name,
+              expression: "customer.name"
+            }
+          ],
+          staticClass: "form-control",
+          attrs: { type: "text" },
+          domProps: { value: _vm.customer.name },
+          on: {
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.$set(_vm.customer, "name", $event.target.value)
+            }
+          }
+        })
       ]),
       _vm._v(" "),
       _c("div", { staticClass: "form-group" }, [
         _c("label", { attrs: { for: "name" } }, [_vm._v("Phone Number")]),
         _vm._v(" "),
-        _c(
-          "input",
-          _vm._b(
-            { staticClass: "form-control", attrs: { type: "text" } },
-            "input",
-            _vm.customer.phone,
-            false
-          )
-        )
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.customer.phone,
+              expression: "customer.phone"
+            }
+          ],
+          staticClass: "form-control",
+          attrs: { type: "text" },
+          domProps: { value: _vm.customer.phone },
+          on: {
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.$set(_vm.customer, "phone", $event.target.value)
+            }
+          }
+        })
       ]),
       _vm._v(" "),
       _c("div", { staticClass: "form-group" }, [
         _c("label", { attrs: { for: "name" } }, [_vm._v("Address")]),
         _vm._v(" "),
-        _c(
-          "input",
-          _vm._b(
-            { staticClass: "form-control", attrs: { type: "text" } },
-            "input",
-            _vm.customer.address,
-            false
-          )
-        )
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.customer.address,
+              expression: "customer.address"
+            }
+          ],
+          staticClass: "form-control",
+          attrs: { type: "text" },
+          domProps: { value: _vm.customer.address },
+          on: {
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.$set(_vm.customer, "address", $event.target.value)
+            }
+          }
+        })
       ])
     ])
   ])
@@ -38926,41 +39006,61 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "row" }, [
-    _c(
-      "div",
-      { staticClass: "col-md-7" },
-      [
-        _c("h3", [_vm._v("Customer details")]),
-        _vm._v(" "),
-        _c("order-form"),
-        _vm._v(" "),
-        _c("h3", [
-          _vm._v("Order details "),
-          _vm.finalAmount > 0
-            ? _c("span", { staticClass: "float-right" }, [
-                _vm._v(_vm._s(_vm.finalAmount))
-              ])
-            : _c("h6", [_vm._v("You have no orders yet")])
-        ]),
-        _vm._v(" "),
-        _c("order-details", { attrs: { orderDetails: _vm.orders } })
-      ],
-      1
-    ),
+  return _c("div", [
+    _c("div", { staticClass: "row mb-3" }, [
+      _c("div", { staticClass: "col-md-12" }, [
+        _c(
+          "button",
+          {
+            staticClass: "btn btn-success float-right",
+            on: { click: _vm.handleOrderSave }
+          },
+          [_vm._v("Save")]
+        )
+      ])
+    ]),
     _vm._v(" "),
-    _c(
-      "div",
-      { staticClass: "col-md-5" },
-      [
-        _c("h3", [_vm._v("Menu")]),
-        _vm._v(" "),
-        _c("order-menu-items", {
-          attrs: { menus: _vm.menuItems, originalMenus: _vm.OriginalMenuItems }
-        })
-      ],
-      1
-    )
+    _c("div", { staticClass: "row" }, [
+      _c(
+        "div",
+        { staticClass: "col-md-7" },
+        [
+          _c("h3", [_vm._v("Customer details")]),
+          _vm._v(" "),
+          _c("order-form", {
+            on: { customerDetailsEvent: _vm.handleCustomerDetails }
+          }),
+          _vm._v(" "),
+          _c("h3", [
+            _vm._v("Order details "),
+            _vm.finalAmount > 0
+              ? _c("span", { staticClass: "float-right" }, [
+                  _vm._v(_vm._s(_vm.finalAmount))
+                ])
+              : _c("h6", [_vm._v("You have no orders yet")])
+          ]),
+          _vm._v(" "),
+          _c("order-details", { attrs: { orderDetails: _vm.orders } })
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "col-md-5" },
+        [
+          _c("h3", [_vm._v("Menu")]),
+          _vm._v(" "),
+          _c("order-menu-items", {
+            attrs: {
+              menus: _vm.menuItems,
+              originalMenus: _vm.OriginalMenuItems
+            }
+          })
+        ],
+        1
+      )
+    ])
   ])
 }
 var staticRenderFns = []
